@@ -1,34 +1,18 @@
-var express = require('express');
-var path = require('path');
-var logger = require('morgan');
-var next = require('next')
+const express = require("express");
+const app = express();
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const logger = require("morgan");
 
-// app.use(logger('dev'));
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
-// app.use(cookieParser());
-// app.use(express.static(path.join(__dirname, 'pages')));
+// const port = process.env.PORT || 3001;
 
-const dev = process.env.NODE_ENV !== 'production'
-const app = next({ dev })
-const handle = app.getRequestHandler()
+app.use(logger('dev'));
+app.use(cors());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-app.prepare()
-    .then(() => {
-        const server = express()
+const usersRouter = require("./routes/users");
+app.use("/users", usersRouter);
 
-        server.get('*', (req, res) => {
-            return handle(req, res)
-        })
-
-        server.listen(3001, (err) => {
-            if (err) throw err
-            console.log('> Ready on http://localhost:3001')
-        })
-    })
-    .catch((ex) => {
-        console.error(ex.stack)
-        process.exit(1)
-    })
 
 module.exports = app;
