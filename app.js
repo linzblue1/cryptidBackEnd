@@ -7,14 +7,15 @@ const logger = require("morgan");
 
 // const port = process.env.PORT || 3001;
 
-app.use(logger('dev'));
+app.use(logger("dev"));
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.get('/', function (req, res) {
-    res.send('<h1>hello world</h1>')
-});
+const indexRouter = require("./routes/index");
+app.use("/", indexRouter);
 
+const usersRouter = require("./routes/users");
+app.use("/users", usersRouter);
 
 module.exports = app;
