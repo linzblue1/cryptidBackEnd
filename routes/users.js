@@ -3,18 +3,10 @@ const express = require("express"),
   bcrypt = require("bcrypt"),
   usersModel = require("../models/users");
 
-router.get("/login", function (req, res, next) {
-  res.render("template", {
-    locals: {
-      title: "Sign In",
-      is_logged_in: req.session.is_logged_in,
-    },
-    partials: {
-      partial: "partial-login",
-    },
-  });
+router.get("/login", async function (req, res, next) {
+  const resultData = await usersModel.userLogin();
+  res.json(resultData).status(200);
 });
-
 router.post("/login", async function (req, res, next) {
   const { email, password } = req.body;
 
@@ -25,22 +17,14 @@ router.post("/login", async function (req, res, next) {
     req.session.is_logged_in = loginResponse.isValid;
     req.session.user_id = loginResponse.id;
     req.session.name = loginResponse.name;
-    res.redirect("/");
   } else {
     res.sendStatus(403);
   }
 });
 
-router.get("/signup", (req, res) => {
-  res.render("template", {
-    locals: {
-      title: "Sign Up",
-      is_logged_in: req.session.is_logged_in,
-    },
-    partials: {
-      partial: "partial-signup",
-    },
-  });
+router.get("/signup", async (req, res) => {
+  const resultData = await usersModel.newUser();
+  res.json(resultData).status(200);
 });
 
 router.post("/signup", async (req, res) => {
@@ -50,13 +34,12 @@ router.post("/signup", async (req, res) => {
 
   const user = new usersModel(null, name, email, username, hash);
   user.save().then(() => {
-    res.redirect("/users/login");
+    res.sendStatus(200);
   });
 });
 
-router.get("/logout", (req, res) => {
+router.get("/logout", async (req, res) => {
   req.session.destroy();
-  res.redirect("/");
 });
 
 module.exports = router;
