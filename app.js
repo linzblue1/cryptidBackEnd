@@ -10,8 +10,20 @@ const upload = require("express-fileupload");
 app.use(upload());
 console.log("Server Started!");
 
+
+
 app.use(logger("dev"));
-app.use(cors());
+const whitelist = ['localhost:3000'];
+const corsOptions = {
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers":
+      "Origin, X-Requested-With, Content-Type, Accept"
+  };
+app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(
