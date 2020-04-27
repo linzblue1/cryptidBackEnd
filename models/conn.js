@@ -1,14 +1,14 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const pgp = require('pg-promise')({
-    query: (e) => {
-        console.log('QUERY:', e.query);
-    },
+const pgp = require("pg-promise")({
+  query: (e) => {
+    console.log("QUERY:", e.query);
+  },
 });
 
 const options = {
-    host: "local",
-    database: "userinformation",
+  host: "localhost",
+  database: "userinformation",
 };
 
 const db = pgp(options);

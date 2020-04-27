@@ -17,7 +17,6 @@
     "express-session": "^1.17.1",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
-    "next": "^9.3.5",
     "pg-promise": "^10.5.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

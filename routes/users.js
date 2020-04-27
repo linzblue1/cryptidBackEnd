@@ -1,18 +1,23 @@
-const express = require("express"),
-  router = express.Router(),
-  bcrypt = require("bcrypt"),
-  usersModel = require("../models/users");
+const express = require("express");
+const router = express.Router();
+const usersModel = require("../models/users");
+
+/* GET home page. */
+router.get("/", function (req, res, next) {
+  res.sendStatus(200);
+});
 
 router.get("/login", async function (req, res, next) {
   const resultData = await usersModel.userLogin();
   res.json(resultData).status(200);
 });
+
 router.post("/login", async function (req, res, next) {
   const { email, password } = req.body;
 
   const user = new usersModel(null, null, email, password);
   const loginResponse = await user.userLogin();
-  // console.log('login response is', loginResponse);
+
   if (!!loginResponse.isValid) {
     req.session.is_logged_in = loginResponse.isValid;
     req.session.user_id = loginResponse.id;
