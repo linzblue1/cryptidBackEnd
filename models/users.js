@@ -17,7 +17,7 @@ class Users {
     try {
       const response = await db.one(
         `INSERT INTO users (userName, email, password) VALUES ($1, $2, $3) RETURNING id;`,
-        [this.name, this.email, this.password]
+        [this.username, this.email, this.password]
       );
       console.log("user was created with id:", response.id);
       return response;
