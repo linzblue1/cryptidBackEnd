@@ -27,6 +27,9 @@ router.get("/signup", async (req, res) => {
   res.json(resultData).status(200);
 });
 
+
+
+
 router.post("/signup", async (req, res) => {
   const { username, email } = req.body;
   const salt = bcrypt.genSaltSync(10);
