@@ -2,28 +2,15 @@ const db = require("./conn");
 const bcrypt = require("bcrypt");
 
 class Users {
-  constructor(id, username, password, email, email_verified, name) {
+  constructor(id, username, password, email, email_verified) {
     this.is = id;
     this.username = username;
     this.password = password;
     this.email = email;
     this.email_verified = email_verified;
-    this.name = name;
   }
   checkpassword(hashedPassword) {
     return bcrypt.compareSync(this.password, hashedPassword);
-  }
-  async save() {
-    try {
-      const response = await db.one(
-        `INSERT INTO users (userName, email, password) VALUES ($1, $2, $3) RETURNING id;`,
-        [this.username, this.email, this.password]
-      );
-      console.log("user was created with id:", response.id);
-      return response;
-    } catch (err) {
-      return err.message;
-    }
   }
   async newUser() {
     try {
@@ -40,8 +27,9 @@ class Users {
 
   async userLogin() {
     try {
-      const response = await db.one(`SELECT * FROM users WHERE email = $1;`, [
-        this.email,
+
+      const response = await db.one(`SELECT * FROM users WHERE username = $1;`, [
+        this.username
       ]);
       console.log("response is", response);
       const isValid = this.checkpassword(response.password);
