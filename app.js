@@ -27,8 +27,7 @@ app.use(
 const indexRouter = require("./routes/index");
 app.use("/", indexRouter);
 
-app.get('/', function (req, res) {
-  res.send('<h1>hello world</h1>')
-});
+const usersRouter = require('./routes/users');
+app.use('/users', usersRouter);
 
 module.exports = app;

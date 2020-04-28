@@ -13,18 +13,10 @@ router.get("/login", async function (req, res, next) {
 });
 
 router.post("/login", async function (req, res, next) {
-  const { email, password } = req.body;
-
-  const user = new usersModel(null, null, email, password);
+  const { username, password } = req.body;
+  const user = new usersModel(null, null, username, password);
   const loginResponse = await user.userLogin();
-
-  if (!!loginResponse.isValid) {
-    req.session.is_logged_in = loginResponse.isValid;
-    req.session.user_id = loginResponse.id;
-    req.session.name = loginResponse.name;
-  } else {
-    res.sendStatus(403);
-  }
+  res.json(loginResponse).status(200);
 });
 
 router.get("/signup", async (req, res) => {
@@ -33,12 +25,10 @@ router.get("/signup", async (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
-  const { name, email } = req.body;
-  const salt = bcrypt.genSaltSync(10);
-  const hash = bcrypt.hashSync(req.body.password, salt);
+  const { username, password, email } = req.body;
 
-  const user = new usersModel(null, name, email, username, hash);
-  user.save().then(() => {
+  const user = new usersModel(null, email, username, password);
+  user.newUser().then(() => {
     res.sendStatus(200);
   });
 });
