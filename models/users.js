@@ -28,7 +28,7 @@ class Users {
   async newUser() {
     try {
       const response = await db.one(
-        "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id;",
+        "INSERT INTO users (username, email, password) VALUES ($3, $2, $1) RETURNING id;",
         [this.email, this.username, this.password]
       );
       return response;
