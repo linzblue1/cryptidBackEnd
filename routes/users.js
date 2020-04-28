@@ -16,7 +16,7 @@ router.get("/login", async function (req, res) {
 router.post("/login", async function (req, res) {
   const { username, password } = req.body;
 
-  const user = new usersModel(null, username, password);
+  const user = new usersModel(null, null, username, password);
 
   const loginResponse = await user.userLogin();
   res.json(loginResponse).status(200);

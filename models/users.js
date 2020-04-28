@@ -1,12 +1,13 @@
 const db = require("./conn");
+const bcrypt = require('bcrypt');
 
 
 class Users {
-  constructor(id, username, password, email, email_verified) {
+  constructor(id, email, username, password, email_verified) {
     this.is = id;
+    this.email = email;
     this.username = username;
     this.password = password;
-    this.email = email;
     this.email_verified = email_verified;
   }
   checkpassword(hashedPassword) {
@@ -16,7 +17,7 @@ class Users {
   async newUser() {
     try {
       const response = await db.one(
-        "INSERT INTO users (username, email, password) VALUES ($3, $2, $1) RETURNING id;",
+        "INSERT INTO users (email, username, password) VALUES ($1, $2, $3) RETURNING id;",
         [this.email, this.username, this.password]
       );
       return response;
