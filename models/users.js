@@ -1,5 +1,5 @@
 const db = require("./conn");
-const bcrypt = require("bcrypt");
+
 
 class Users {
   constructor(id, username, password, email, email_verified, name) {
@@ -10,9 +10,7 @@ class Users {
     this.email_verified = email_verified;
     this.name = name;
   }
-  checkpassword(hashedPassword) {
-    return bcrypt.compareSync(this.password, hashedPassword);
-  }
+
   async save() {
     try {
       const response = await db.one(

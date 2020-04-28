@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const usersModel = require("../models/users");
+const bcrypt = require("bcrypt");
 
 /* GET home page. */
 router.get("/", function (req, res) {
@@ -24,13 +25,30 @@ router.get("/signup", async (req, res) => {
   res.json(resultData).status(200);
 });
 
+
+
+
 router.post("/signup", async (req, res) => {
+
   const { username, password, email } = req.body;
 
+  const saltRounds = 10;
+
+  bcrypt.genSalt(saltRounds, function (err, salt) {
+    if (err) {
+      throw err
+    } else {
+      bcrypt.hash(password, salt, function (err, password) {
+        if (err) {
+          throw err
+        } else {
+          // console.log(hash)
+          console.log(password)
+        }
+      })
+    }
+  })
   const user = new usersModel(null, email, username, password);
-  user.newUser().then(() => {
-    res.sendStatus(200);
-  });
 });
 
 router.get("/logout", async (req, res) => {
