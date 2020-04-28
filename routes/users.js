@@ -3,16 +3,16 @@ const router = express.Router();
 const usersModel = require("../models/users");
 
 /* GET home page. */
-router.get("/", function (req, res, next) {
+router.get("/", function (req, res) {
   res.sendStatus(200);
 });
 
-router.get("/login", async function (req, res, next) {
+router.get("/login", async function (req, res) {
   const resultData = await usersModel.userLogin();
   res.json(resultData).status(200);
 });
 
-router.post("/login", async function (req, res, next) {
+router.post("/login", async function (req, res) {
   const { username, password } = req.body;
   const user = new usersModel(null, null, username, password);
   const loginResponse = await user.userLogin();
