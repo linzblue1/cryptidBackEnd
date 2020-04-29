@@ -27,12 +27,7 @@ app.use(
 const indexRouter = require("./routes/index");
 app.use("/", indexRouter);
 
-<<<<<<< HEAD
-const usersRouter = require("./routes/users");
-app.use("/users", usersRouter);
-=======
 const usersRouter = require('./routes/users');
 app.use('/users', usersRouter);
->>>>>>> 6c6cb8d4daa7924e6a9e0e6d9aad24e80b4ab2a6
 
 module.exports = app;

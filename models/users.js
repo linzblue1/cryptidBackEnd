@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-import db from "./conn";
-
-
-=======
 const db = require("./conn");
 const bcrypt = require('bcrypt');
 
@@ -54,4 +49,3 @@ class Users {
 }
 
 module.exports = Users;
->>>>>>> 6c6cb8d4daa7924e6a9e0e6d9aad24e80b4ab2a6

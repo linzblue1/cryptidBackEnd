@@ -20,10 +20,7 @@
     "pg-promise": "^10.5.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-<<<<<<< HEAD
-=======
     "session-file-store": "^1.4.0",
->>>>>>> 6c6cb8d4daa7924e6a9e0e6d9aad24e80b4ab2a6
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0"
   }
