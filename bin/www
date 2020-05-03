@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const Channels = require("../models/Channels");
 
 /**
  * Module dependencies.
@@ -12,7 +13,10 @@ const cors = require('cors');
 app.use(cors());
 // Socket.io 
 
-io.on('connection', function (socket) {
+io.on('connection', async (socket) => {
+  const channelInstance = await new Channels();
+  const channels = await channelInstance.getChannels();
+  socket.emit('channels', channels);
   socket.on('sent message', function (msg) {
     console.log('message' + ' : ' + JSON.stringify(msg))
     socket.broadcast.emit('message', msg);

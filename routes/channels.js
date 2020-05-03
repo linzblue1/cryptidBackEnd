@@ -1,8 +1,37 @@
-// const express = require("express");
-// const router = express.Router();
-// const usersModel = require("../models/users");
-// const bcrypt = require("bcrypt");
+const express = require("express");
+const router = express.Router();
+const Channels = require("../models/Channels");
+const bcrypt = require("bcrypt");
 
+const loginPost = async (req, res, next) => {
+    const { channel, password } = req.body;
+    const channelInstance = await Channels.channelLogin(channel);
+    const isValid = channelInstance.checkpassword(password);
+
+    console.log('isValid',isValid);
+    if (isValid) {
+        req.session.is_logged_in = isValid;
+        req.session.channel_id = channelInstance.id;
+        req.session.name = channelInstance.channel;
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(403);
+    }
+}
+
+const putChannel = async (req, res) => {
+    const { channel } = req.body;
+    const channelInstance = new Channels(null, channel, password);
+    channelInstance.save().then(() => {
+        res.redirect('channel/login');
+    })
+    
+}
+
+router.get('/logout', (req,res) => {
+    req.session.destroy();
+    res.redirect('/');
+})
 // /* GET home page. */
 // router.get("/", function (req, res) {
 //   res.sendStatus(200);
@@ -60,4 +89,4 @@
 //   req.session.destroy();
 // });
 
-// module.exports = router;
+module.exports = { loginPost };
