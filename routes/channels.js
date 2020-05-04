@@ -7,7 +7,6 @@ const loginPost = async (req, res, next) => {
     const { channel, password } = req.body;
     const channelInstance = await Channels.channelLogin(channel);
     const isValid = channelInstance.checkpassword(password);
-
     console.log('isValid',isValid);
     if (isValid) {
         req.session.is_logged_in = isValid;
@@ -20,13 +19,16 @@ const loginPost = async (req, res, next) => {
 }
 
 const putChannel = async (req, res) => {
-    const { channel } = req.body;
-    const channelInstance = new Channels(null, channel, password);
-    channelInstance.save().then(() => {
-        res.redirect('channel/login');
-    })
-    
+    const { channel, password } = req.body;
+    const channelInstance = await Channels.add(channel, password);
+    if(channel === channelInstance.channel){
+        console.log("GOOD STATUS")
+        res.sendStatus(200);
+    }else {
+        res.sendStatus(403);
+    }
 }
+
 
 router.get('/logout', (req,res) => {
     req.session.destroy();
@@ -89,4 +91,4 @@ router.get('/logout', (req,res) => {
 //   req.session.destroy();
 // });
 
-module.exports = { loginPost };
+module.exports = { loginPost, putChannel};

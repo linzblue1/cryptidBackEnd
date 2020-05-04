@@ -13,20 +13,20 @@ class Channels {
     return bcrypt.compareSync(password, this.password);
   }
 
-  async newChannel(channel, password) {
+  static add(channel, password) {
     try {
-      const response = db.one(
-        "INSERT INTO channels (channel, password) VALUES ($1, $2)",
-        [channel, password]
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(password, salt);
+      const channelInstance = db.one(
+        "INSERT INTO channels (channel, password) VALUES ($1, $2) RETURNING id, channel",
+        [channel, hash]
       ).then(channelData => {
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(channelData.password, salt);
         return new Channels(
           channelData.id,
-          channelData.channel,
-          hash
+          channelData.channel
         )
       })
+      return channelInstance
     } catch (error) {
       console.error("ERROR", error);
       return error;

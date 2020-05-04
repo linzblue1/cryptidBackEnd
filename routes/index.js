@@ -1,7 +1,7 @@
 const express = require("express"),
   router = express.Router();
 
-const {loginPost} = require('./channels');
+const {loginPost, putChannel} = require('./channels');
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -9,5 +9,6 @@ router.get("/", function (req, res, next) {
 });
 
 router.post("/login",loginPost)
+router.post("/putchannel", putChannel)
 
 module.exports = router;
